@@ -21,4 +21,5 @@ GoCache
 1. LRU
     核心数据结构 map + 双向链表
 
-2. 
+2. sync.Mutex 实现LRU缓存的并发控制
+    实现GoCache的核心数据结构Group 
