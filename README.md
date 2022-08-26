@@ -23,3 +23,6 @@ GoCache
 
 2. sync.Mutex 实现LRU缓存的并发控制
     实现GoCache的核心数据结构Group 
+
+3. 搭建HTTP server
+    http.ListenAndServe 接收 2 个参数，第一个参数是服务启动的地址，第二个参数是 Handler，任何实现了 ServeHTTP 方法的对象都可以作为 HTTP 的 Handler。
