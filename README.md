@@ -26,3 +26,10 @@ GoCache
 
 3. 搭建HTTP server
     http.ListenAndServe 接收 2 个参数，第一个参数是服务启动的地址，第二个参数是 Handler，任何实现了 ServeHTTP 方法的对象都可以作为 HTTP 的 Handler。
+    通过URL的路径来check搜索的key有没有在cache中（cache用的是LRU算法实现的）
+
+4. 一致性哈希
+    通过哈希每次访问同一个节点
+    使用一致性哈希算法可以解决存在的缓存雪崩
+    引入环的概念，解决了增加或者删除节点之后节点挂载问题
+    对于数据倾斜问题，提出了虚拟节点的概念
