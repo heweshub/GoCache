@@ -40,3 +40,7 @@ GoCache
 
 6. 解决缓存击穿问题
     singleflight
+
+7. PB通信
+    protobuf 即 Protocol Buffers，Google 开发的一种数据描述语言，是一种轻便高效的结构化数据存储格式，与语言、平台无关，可扩展可序列化。protobuf 以二进制方式存储，占用空间小。
+    RPC用的会比较多
