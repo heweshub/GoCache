@@ -18,7 +18,8 @@ GoCache
 
 
 实现策略
-1. LRU
+1. day1 -> LRU
+    缓存就是为了加速
     核心数据结构 map + 双向链表
 
 2. sync.Mutex 实现LRU缓存的并发控制

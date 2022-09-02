@@ -1,7 +1,7 @@
 package daytwo
 
 import (
-	lru "GoCache/daytwo/LRU"
+	"GoCache/day2/lru"
 	"sync"
 )
 
@@ -11,10 +11,11 @@ type cache struct {
 	cacheBytes int64
 }
 
-// 加锁操作
+// 加锁实现add和get操作
 func (c *cache) add(key string, value ByteView) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
+	// 延迟初始化 --> 提高性能
 	if c.lru == nil {
 		c.lru = lru.New(c.cacheBytes, nil)
 	}
