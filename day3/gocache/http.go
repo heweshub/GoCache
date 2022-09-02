@@ -9,6 +9,7 @@ import (
 
 const defaultBasePath = "/_gocache/"
 
+// HTTP 连接池
 type HTTPPool struct {
 	self     string
 	basePath string
@@ -26,6 +27,7 @@ func (p *HTTPPool) Log(format string, v ...interface{}) {
 }
 
 func (p *HTTPPool) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	// 路由不匹配就直接抛出错误
 	if !strings.HasPrefix(r.URL.Path, p.basePath) {
 		panic("HTTPPool serving unexpected path: " + r.URL.Path)
 	}
@@ -36,9 +38,9 @@ func (p *HTTPPool) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "bad resquest", http.StatusBadRequest)
 		return
 	}
+	// 手动分割
 	groupName := parts[0]
 	key := parts[1]
-
 	group := GetGroup(groupName)
 	if group == nil {
 		http.Error(w, "no such group:"+groupName, http.StatusNotFound)

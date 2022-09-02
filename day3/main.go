@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// 用一个map充当数据源
 var db = map[string]string{
 	"Tom":  "630",
 	"Jack": "589",
