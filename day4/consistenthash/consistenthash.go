@@ -11,7 +11,7 @@ type Hash func(data []byte) uint32
 type Map struct {
 	hash     Hash
 	replicas int
-	keys     []int
+	keys     []int          // 哈希环
 	hashMap  map[int]string // 虚拟节点和真实节点的映射，虚拟节点：真实节点
 }
 
