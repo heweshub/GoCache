@@ -13,7 +13,7 @@ import (
 
 const (
 	defaultBasePath = "/_gocache/"
-	defaultReplicas = 50
+	defaultReplicas = 50 // 50个虚拟节点
 )
 
 type HTTPPool struct {
@@ -21,7 +21,7 @@ type HTTPPool struct {
 	basePath    string
 	mu          sync.Mutex
 	peers       *consistenthash.Map
-	httpGetters map[string]*httpGetter
+	httpGetters map[string]*httpGetter // 映射不同的baseURL
 }
 
 func NewHTTPPool(self string) *HTTPPool {
@@ -63,6 +63,7 @@ func (p *HTTPPool) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Write(view.ByteSlice())
 }
 
+// 实现PeerGetter接口
 type httpGetter struct {
 	baseURL string
 }
@@ -70,7 +71,7 @@ type httpGetter struct {
 func (h *httpGetter) Get(group string, key string) ([]byte, error) {
 	u := fmt.Sprintf(
 		"%v%v/%v",
-		h.baseURL,
+		h.baseURL, // 已经加/了
 		url.QueryEscape(group),
 		url.QueryEscape(key),
 	)
@@ -106,7 +107,7 @@ func (p *HTTPPool) Set(peers ...string) {
 	}
 }
 
-// PickPeer picks a peer according to key
+// PickPeer picks a peer client according to key
 func (p *HTTPPool) PickPeer(key string) (PeerGetter, bool) {
 	p.mu.Lock()
 	defer p.mu.Unlock()

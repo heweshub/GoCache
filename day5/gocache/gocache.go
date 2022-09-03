@@ -80,7 +80,7 @@ func (g *Group) populateCache(key string, value ByteView) {
 	g.mainCache.add(key, value)
 }
 
-// RegisterPeers registers a PeerPicker for choosing remote peer
+// 向group中注册远程节点信息
 func (g *Group) RegisterPeers(peers PeerPicker) {
 	if g.peers != nil {
 		panic("RegisterPeerPicker called more than once")
@@ -89,6 +89,7 @@ func (g *Group) RegisterPeers(peers PeerPicker) {
 }
 
 func (g *Group) load(key string) (value ByteView, err error) {
+	// 非本机节点
 	if g.peers != nil {
 		if peer, ok := g.peers.PickPeer(key); ok {
 			if value, err = g.getFromPeer(peer, key); err == nil {
@@ -97,10 +98,11 @@ func (g *Group) load(key string) (value ByteView, err error) {
 			log.Println("[GoCache] Failed to get from peer", err)
 		}
 	}
-
+	// 本机节点或者失败
 	return g.getLocally(key)
 }
 
+// 实现了PeerPicker接口的httpGetter访问远程节点获取缓存值
 func (g *Group) getFromPeer(peer PeerGetter, key string) (ByteView, error) {
 	bytes, err := peer.Get(g.name, key)
 	if err != nil {
