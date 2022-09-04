@@ -1,7 +1,8 @@
+// 定义传输的数据结构
 syntax = "proto3";
 
 package gocachepb;
-option go_package="./";
+option go_package="./"; // 需要加
 
 message Request {
     string group = 1;
@@ -11,7 +12,7 @@ message Request {
 message Response {
     bytes value = 1;
 }
-
+// 请求和响应
 service GroupCache {
     rpc Get(Request) returns (Response);
 }

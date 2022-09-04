@@ -3,13 +3,13 @@ package singleflight
 import "sync"
 
 type call struct {
-	wg  sync.WaitGroup
+	wg  sync.WaitGroup // goroutine 同步
 	val interface{}
 	err error
 }
 
 type Group struct {
-	mu sync.Mutex
+	mu sync.Mutex // 给m加锁
 	m  map[string]*call
 }
 

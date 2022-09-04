@@ -2,7 +2,7 @@ package gocache
 
 import (
 	"fmt"
-	pb "geecache/geecachepb"
+	pb "gocache/gocachepb"
 	"gocache/singleflight"
 	"log"
 	"sync"
@@ -120,6 +120,7 @@ func (g *Group) getFromPeer(peer PeerGetter, key string) (ByteView, error) {
 		Key:   key,
 	}
 	res := &pb.Response{}
+	// Get到就返回key的值
 	err := peer.Get(req, res)
 	if err != nil {
 		return ByteView{}, err

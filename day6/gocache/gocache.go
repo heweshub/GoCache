@@ -22,7 +22,9 @@ type Group struct {
 	getter    Getter // 缓存未命中时获取源数据的回调callback
 	mainCache cache  // 实现并发存储
 	peers     PeerPicker
-	loader    *singleflight.Group
+	// 使用 singleflight.Group 可以保证每一个key只被fetch一次
+	// 从而避免了缓存击穿问题
+	loader *singleflight.Group
 }
 
 var (
@@ -42,7 +44,7 @@ func NewGroup(name string, cacheBytes int64, getter Getter) *Group {
 		name:      name,
 		getter:    getter,
 		mainCache: cache{cacheBytes: cacheBytes},
-		loader:    &singleflight.Group{},
+		loader:    &singleflight.Group{}, // 新增
 	}
 	groups[name] = g
 	return g
@@ -91,6 +93,7 @@ func (g *Group) RegisterPeers(peers PeerPicker) {
 	g.peers = peers
 }
 
+// 保证了load过程在相同key的并发场景下只会调用一次
 func (g *Group) load(key string) (value ByteView, err error) {
 	// each key is only fetched once (either locally or remotely)
 	// regardless of the number of concurrent callers.
